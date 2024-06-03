@@ -23,10 +23,5 @@ pipeline {
                                 playbook: 'playbook.yml'
             }
         }
-        stage('Test') {
-            steps {
-                sh 'curl http://192.168.105.3:4444/'
-            }
-        }
     }
 }
