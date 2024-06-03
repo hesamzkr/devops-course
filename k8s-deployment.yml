@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hesamzkr-python-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hesamzkr-python-app
+  template:
+    metadata:
+      labels:
+        app: hesamzkr-python-app
+    spec:
+      containers:
+        - name: hesamzkr-python-app
+          image: ttl.sh/hesamzkr-python-app:latest
+          ports:
+            - containerPort: 4444
