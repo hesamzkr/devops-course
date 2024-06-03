@@ -1,7 +1,9 @@
 - hosts: app
   tasks:
     - name: Stop container
-      command: docker stop hesamzkr-python-app || true && docker rm hesamzkr-python-app || true
+      shell: |
+        docker stop hesamzkr-python-app || true
+        docker rm hesamzkr-python-app || true
       ignore_errors: true
 
     - name: Run container
