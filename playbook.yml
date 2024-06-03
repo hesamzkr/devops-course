@@ -1,10 +1,8 @@
 - hosts: app
   tasks:
-    - name: Pull image
-      command: docker pull ttl.sh/hesamzkr-python-app:latest
-
     - name: Stop container
       command: docker stop hesamzkr-python-app || true && docker rm hesamzkr-python-app || true
+      ignore_errors: true
 
     - name: Run container
       command: docker run -d -p 4444:4444 --name hesamzkr-python-app ttl.sh/hesamzkr-python-app:latest
