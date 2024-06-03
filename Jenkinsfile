@@ -24,7 +24,9 @@ pipeline {
             }
         }
         stage('Test') {
-            sh 'curl http://192.168.105.3:4444/'
+            steps {
+                sh 'curl http://192.168.105.3:4444/'
+            }
         }
     }
 }
