@@ -5,6 +5,7 @@ pipeline {
         DOCKER_IMAGE = 'hesamzkr-python-app'
         DOCKER_REGISTRY = 'ttl.sh'
         DEPLOYMENT_FILE = 'k8s-deployment.yml'
+        CREDENTIALS_ID = 'kubeconfig-id'
     }
 
     stages {
@@ -20,15 +21,9 @@ pipeline {
         }
         stage('Deploy to Kubernetes') {
             steps {
-                withKubeConfig([credentialsId: 'kubeconfig-id']) {
-                    sh 'kubectl apply -f ${DEPLOYMENT_FILE}'
+                withKubeConfig([credentialsId: '${CREDENTIALS_ID}']) {
+                    sh 'kubectl apply -f ${DEPLOYMENT_FILE} --validate=false'
                 }
-                // script {
-                //     kubernetesDeploy(
-                //         configs: 'k8s-deployment.yml',
-                //         kubeconfigId: 'kubeconfig-id'
-                //     )
-                // }
            }
         }
     }
