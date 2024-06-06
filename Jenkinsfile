@@ -34,7 +34,7 @@ pipeline {
                             sudo systemctl start docker
                             sudo docker stop hesamzkr-python-app || true
                             sudo docker rm hesamzkr-python-app || true
-                            sudo docker run -d -p 4444:4444 --name hesamzkr-python-app ttl.sh/hesamzkr-python-app:latest
+                            sudo docker run -d -p 80:4444 --name hesamzkr-python-app ttl.sh/hesamzkr-python-app:latest
                         """
                     }
                 }
