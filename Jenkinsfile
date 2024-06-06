@@ -31,9 +31,6 @@ pipeline {
                     sshagent(credentials: [SSH_KEY_ID]) {
                         sh """
                             ssh -o StrictHostKeyChecking=no ubuntu@ec2-51-20-18-37.eu-north-1.compute.amazonaws.com <<EOF
-                            sudo apt update
-                            sudo apt install -y docker.io
-
                             sudo systemctl start docker
                             sudo docker stop hesamzkr-python-app || true
                             sudo docker rm hesamzkr-python-app || true
