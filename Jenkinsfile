@@ -6,7 +6,7 @@ pipeline {
         DOCKER_REGISTRY = 'ttl.sh'
         DEPLOYMENT_FILE = 'k8s-deployment.yml'
         SSH_CREDENTIALS = 'k8s-credentials'
-        SSH_TARGET = 'jenkins@192.168.105.4'
+        // SSH_TARGET = 'jenkins@192.168.105.4'
     }
 
     stages {
@@ -23,7 +23,8 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 withCredentials([file(credentialsId: 'k8s-credentials', variable: 'KUBECONFIG')]) {
-                    sh 'kubectl --kubeconfig=$KUBECONFIG apply -f k8s-deployment.yaml'
+                    sh 'cat ${KUBECONFIG}' // Debugging step to view the KUBECONFIG content
+                    sh 'kubectl --kubeconfig=$KUBECONFIG apply -f ${DEPLOYMENT_FILE}'
                 }
             }
         }
