@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "ttl.sh/hesamzkr-python-app"
         STAGING_SSH_KEY = 'staging-key'
-        PRODUCTION_SSH_KEY = 'production-key'
+        PRODUCTION_SSH_KEY = 'staging-key'
         ANSIBLE_HOST_KEY_CHECKING = 'false'
     }
 
