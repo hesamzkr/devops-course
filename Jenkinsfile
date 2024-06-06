@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "ttl.sh/hesamzkr-python-app"
-        SSH_KEY = 'staging-key' 
+        SSH_KEY_ID = 'staging-key' 
         ANSIBLE_HOST_KEY_CHECKING = 'false'
     }
 
@@ -20,7 +20,7 @@ pipeline {
         }
         stage('Deploy to Staging') {
             steps {
-                ansiblePlaybook credentialsId: SSH_KEY,
+                ansiblePlaybook credentialsId: SSH_KEY_ID,
                                 inventory: 'staging-hosts.ini',
                                 playbook: 'deploy-staging.yml'
             }
@@ -28,9 +28,9 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 script { 
-                    sshagent([credentialsId: SSH_KEY]) {
+                    withCredentials([sshUserPrivateKey(credentialsId: SSH_KEY_ID, keyFileVariable: 'SSH_KEY')]) {
                         sh """
-                            ssh -o StrictHostKeyChecking=no -i ubuntu@ec2-51-20-18-37.eu-north-1.compute.amazonaws.com <<EOF
+                            ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@ec2-51-20-18-37.eu-north-1.compute.amazonaws.com <<EOF
                             docker stop hesamzkr-python-app || true
                             docker rm hesamzkr-python-app || true
                             docker run -d -p 4444:4444 --name hesamzkr-python-app ttl.sh/hesamzkr-python-app:latest
