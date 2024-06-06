@@ -28,7 +28,7 @@ jobs:
     steps:
       - name: Deploy to target VM
         env:
-          DEPLOY_HOST: 192.168.105.2
+          DEPLOY_HOST: 192.168.105.3
           DEPLOY_USER: jenkins
           SSH_KEY: ${{ secrets.SSH_KEY }}
         run: |
