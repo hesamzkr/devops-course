@@ -30,7 +30,7 @@ pipeline {
             steps {
                 script { 
                         sh """
-                            ssh -o StrictHostKeyChecking=no -i /home/vagrant/.ssh/id_rsa ubuntu@ec2-51-20-18-37.eu-north-1.compute.amazonaws.com  <<EOF
+                            sudo ssh -o StrictHostKeyChecking=no -i /home/vagrant/.ssh/id_rsa ubuntu@ec2-51-20-18-37.eu-north-1.compute.amazonaws.com  <<EOF
                             docker stop hesamzkr-python-app || true
                             docker rm hesamzkr-python-app || true
                             docker run -d -p 4444:4444 --name hesamzkr-python-app ttl.sh/hesamzkr-python-app:latest
