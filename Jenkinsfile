@@ -28,7 +28,7 @@ pipeline {
         stage('Deploy to Production') {
             steps { 
                 script { 
-                    sshagent(credentials: ['SSH_KEY_ID']) {
+                    sshagent(credentials: [SSH_KEY_ID]) {
                         sh """
                             ssh -o StrictHostKeyChecking=no ubuntu@ec2-51-20-18-37.eu-north-1.compute.amazonaws.com <<EOF
                             docker stop hesamzkr-python-app || true
