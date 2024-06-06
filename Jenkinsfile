@@ -20,7 +20,7 @@ pipeline {
         }
         stage('Deploy to Staging') {
             steps {
-                ansiblePlaybook credentialsId: STAGING_SSH_KEY,
+                ansiblePlaybook credentialsId: SSH_KEY,
                                 inventory: 'staging-hosts.ini',
                                 playbook: 'deploy-staging.yml'
             }
@@ -28,7 +28,7 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 script { 
-                    sshagent([credentialsId: PRODUCTION_SSH_KEY]) {
+                    sshagent([credentialsId: SSH_KEY]) {
                         sh """
                             ssh -o StrictHostKeyChecking=no -i ubuntu@ec2-51-20-18-37.eu-north-1.compute.amazonaws.com <<EOF
                             docker stop hesamzkr-python-app || true
