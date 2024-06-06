@@ -20,14 +20,11 @@ pipeline {
         stage('Deploy to Kubernetes') { 
             steps {
                 script {
-                    sshagent(credentials: [SSH_KEY_ID]) {
-                        withCredentials([file(credentialsId: 'k8s-credentials', variable: 'KUBECONFIG')]) {
-                            sh """
-                                ssh -o StrictHostKeyChecking=no vagrant@192.168.105.4 <<EOF
-                                kubectl --kubeconfig=$KUBECONFIG apply -f k8s-deployment.yml --validate=false
-                            """
-                        }
-                   }
+                    withCredentials([file(credentialsId: 'k8s-credentials', variable: 'KUBECONFIG')]) {
+                        sh """
+                            kubectl --kubeconfig=$KUBECONFIG apply -f k8s-deployment.yml --validate=false
+                        """
+                    } 
                 }
            }
        }
