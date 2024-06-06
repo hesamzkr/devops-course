@@ -4,9 +4,6 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'hesamzkr-python-app'
         DOCKER_REGISTRY = 'ttl.sh'
-        DEPLOYMENT_FILE = 'k8s-deployment.yml'
-        SSH_CREDENTIALS = 'k8s-credentials'
-        // SSH_TARGET = 'jenkins@192.168.105.4'
     }
 
     stages {
@@ -20,13 +17,13 @@ pipeline {
                 sh 'docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}'
             }
         }
-        stage('Deploy to Kubernetes') {
+        stage('Deploy to Kubernetes') { 
             steps {
                 withCredentials([file(credentialsId: 'k8s-credentials', variable: 'KUBECONFIG')]) {
-                    sh 'kubectl apply -f k8s-deployment.yml --validate=false'
+                    sh 'kubectl --kubeconfig=$KUBECONFIG apply -f k8s-deployment.yml'
                 }
             }
-        }
+       }
     }
 }
 
