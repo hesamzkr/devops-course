@@ -30,10 +30,13 @@ pipeline {
             steps {
                 script {
                     withCredentials([sshUserPrivateKey(credentialsId: STAGING_SSH_KEY, keyFileVariable: 'SSH_KEY_FILE')]) {
-                        sh 'ssh -o StrictHostKeyChecking=no -i ${STAGING_SSH_KEY} ubuntu@ec2-16-170-224-192.eu-north-1.compute.amazonaws.com <<EOF'
-                        sh 'docker stop hesamzkr-python-app || true'
-                        sh 'docker rm hesamzkr-python-app || true'
-                        sh 'docker run -d -p 4444:4444 --name hesamzkr-python-app ttl.sh/hesamzkr-python-app:latest'
+                        sh """
+                            ssh -o StrictHostKeyChecking=no -i ${SSH_KEY_FILE} ubuntu@ec2-16-170-224-192.eu-north-1.compute.amazonaws.com <<EOF
+                            docker stop hesamzkr-python-app || true
+                            docker rm hesamzkr-python-app || true
+                            docker run -d -p 4444:4444 --name hesamzkr-python-app ttl.sh/hesamzkr-python-app:latest
+                            EOF
+                        """
                     }
                 }
             }
