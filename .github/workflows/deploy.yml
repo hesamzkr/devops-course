@@ -35,6 +35,6 @@ jobs:
           echo "${SSH_KEY}" > ssh_key
           chmod 600 ssh_key
           ssh -o StrictHostKeyChecking=no -i ssh_key ${DEPLOY_USER}@${DEPLOY_HOST} << 'EOF'
-            docker stop my-python-app || true
-            docker rm my-python-app || true
+            docker stop hesamzkr-python-app || true
+            docker rm hesamzkr-python-app || true
             docker run -d -p 80:4444 --name hesamzkr-python-app ttl.sh/hesamzkr-python-app:latest
