@@ -38,4 +38,5 @@ jobs:
             docker stop my-python-app || true
             docker rm my-python-app || true
             docker run -d -p 80:4444 --name hesamzkr-python-app ttl.sh/hesamzkr-python-app:latest
+EOF
           rm ssh_key
