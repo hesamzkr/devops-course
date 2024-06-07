@@ -35,7 +35,6 @@ jobs:
 
   staging:
     runs-on: self-hosted
-    if: github.ref == 'refs/heads/exam'
     needs: [build, test]
 
     steps:
@@ -67,8 +66,8 @@ jobs:
           echo "${SSH_KEY}" > ssh_key
           chmod 600 ssh_key
           ssh -o StrictHostKeyChecking=no -i ssh_key ${DEPLOY_USER}@${DEPLOY_HOST} << 'EOF'
-            sudo apt update
-            sudo apt install -y docker.io
+            # sudo apt update
+            # sudo apt install -y docker.io
             sudo systemctl start docker
             sudo docker stop hesamzkr-node-app || true
             sudo docker rm hesamzkr-node-app || true
