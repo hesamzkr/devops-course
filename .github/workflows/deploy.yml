@@ -7,6 +7,15 @@ on:
       - main
 
 jobs:
+   test:
+    runs-on: self-hosted
+    needs: build
+
+    steps:
+      - name: Test Docker Compose
+        run: |
+          docker compose up
+
   build:
     runs-on: self-hosted
 
@@ -21,17 +30,6 @@ jobs:
         run: |
           docker build -t ttl.sh/hesamzkr-node-app .
           docker push ttl.sh/hesamzkr-node-app
-
-  test:
-    runs-on: self-hosted
-    needs: build
-
-    steps:
-      - name: Test Docker Compose
-        run: |
-          docker compose up
-
-
 
   staging:
     runs-on: self-hosted
