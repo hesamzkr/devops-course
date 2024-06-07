@@ -9,7 +9,6 @@ on:
 jobs:
    test:
     runs-on: self-hosted
-    needs: build
 
     steps:
       - name: Test Docker Compose
