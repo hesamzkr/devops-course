@@ -35,7 +35,7 @@ jobs:
 
   staging:
     runs-on: self-hosted
-    if: github.ref == 'refs/head/exam'
+    if: github.ref == 'refs/heads/exam'
     needs: [build, test]
 
     steps:
@@ -54,7 +54,7 @@ jobs:
 
   production:
     runs-on: self-hosted
-    if: github.ref == 'refs/head/main'
+    if: github.ref == 'refs/heads/main'
     needs: [build, test]
  
     steps:
