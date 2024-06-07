@@ -53,7 +53,7 @@ jobs:
   production:
     runs-on: self-hosted
     if: github.ref == 'refs/heads/main'
-    needs: staging
+    needs: health-staging
 
     steps:
       - name: Deploy to target VM
