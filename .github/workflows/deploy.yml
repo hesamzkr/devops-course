@@ -34,8 +34,8 @@ jobs:
 
 
   staging:
-    # if: github.ref == 'refs/head/exam'
     runs-on: self-hosted
+    if: github.ref == 'refs/head/exam'
     needs: [build, test]
 
     steps:
@@ -53,15 +53,15 @@ jobs:
             docker run -d -p 80:4444 --name hesamzkr-node-app ttl.sh/hesamzkr-node-app:latest
 
   production:
-    if: github.ref == 'refs/head/main'
     runs-on: self-hosted
+    if: github.ref == 'refs/head/main'
     needs: [build, test]
  
     steps:
       - name: Deploy to target VM
         env:
-          DEPLOY_HOST: 192.168.105.3
-          DEPLOY_USER: jenkins
+          DEPLOY_HOST: ec2-13-48-1-36.eu-north-1.compute.amazonaws.com
+          DEPLOY_USER: ubuntu
           SSH_KEY: ${{ secrets.SSH_KEY }}
         run: |
           echo "${SSH_KEY}" > ssh_key
