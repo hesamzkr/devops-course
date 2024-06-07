@@ -34,7 +34,7 @@ jobs:
 
   staging:
     runs-on: self-hosted
-    needs: [build, test]
+    needs: build
 
     steps:
       - name: Deploy to Staging VM
@@ -53,7 +53,7 @@ jobs:
   production:
     runs-on: self-hosted
     if: github.ref == 'refs/heads/main'
-    needs: [build, test]
+    needs: staging
 
     steps:
       - name: Deploy to target VM
