@@ -1,11 +1,14 @@
-FROM python:3.11
+FROM node:21
 
-WORKDIR /code
+WORKDIR /usr/src/app
 
-COPY ./requirements.txt /code/requirements.txt
+COPY package*.json ./
 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+RUN npm install
 
-COPY ./app /code/app
+COPY . .
 
-CMD ["fastapi", "run", "app/main.py", "--port", "4444"]
+EXPOSE 3000
+
+CMD ["node", "index.js"]
+

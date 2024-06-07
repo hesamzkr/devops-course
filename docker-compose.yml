@@ -1,0 +1,6 @@
+version: '3'
+services:
+  test:
+    image: ttl.sh/hesamzkr-node-app
+    command: ["sh", "-c", "node --test"]
+

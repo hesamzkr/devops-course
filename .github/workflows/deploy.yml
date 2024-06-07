@@ -1,0 +1,75 @@
+name: Build and Staging
+
+on:
+  push:
+    branches:
+      - exam
+      - main
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and Push Docker image
+        run: |
+          docker build -t ttl.sh/hesamzkr-node-app .
+          docker push ttl.sh/hesamzkr-node-app
+
+  test:
+    runs-on: self-hosted
+    needs: build
+
+    steps:
+      - name: Test Docker Compose
+        run: |
+          docker compose up
+
+
+
+  staging:
+    if: github.ref == 'refs/head/exam'
+    runs-on: self-hosted
+    needs: [build, test]
+
+    steps:
+      - name: Deploy to Staging VM env:
+          DEPLOY_HOST: 192.168.105.3
+          DEPLOY_USER: jenkins
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          echo "${SSH_KEY}" > ssh_key
+          chmod 600 ssh_key
+          ssh -o StrictHostKeyChecking=no -i ssh_key ${DEPLOY_USER}@${DEPLOY_HOST} << 'EOF'
+            docker stop hesamzkr-node-app || true
+            docker rm hesamzkr-node-app || true
+            docker run -d -p 80:4444 --name hesamzkr-node-app ttl.sh/hesamzkr-node-app:latest
+
+  production:
+    if: github.ref == 'refs/head/main'
+    runs-on: self-hosted
+    needs: [build, test]
+ 
+    steps:
+      - name: Deploy to target VM
+        env:
+          DEPLOY_HOST: 192.168.105.3
+          DEPLOY_USER: jenkins
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          echo "${SSH_KEY}" > ssh_key
+          chmod 600 ssh_key
+          ssh -o StrictHostKeyChecking=no -i ssh_key ${DEPLOY_USER}@${DEPLOY_HOST} << 'EOF'
+            docker stop hesamzkr-node-app || true
+            docker rm hesamzkr-node-app || true
+            docker run -d -p 80:4444 --name hesamzkr-node-app ttl.sh/hesamzkr-node-app:latest
+
+
+
+
