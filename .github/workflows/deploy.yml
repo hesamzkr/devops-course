@@ -67,9 +67,12 @@ jobs:
           echo "${SSH_KEY}" > ssh_key
           chmod 600 ssh_key
           ssh -o StrictHostKeyChecking=no -i ssh_key ${DEPLOY_USER}@${DEPLOY_HOST} << 'EOF'
-            docker stop hesamzkr-node-app || true
-            docker rm hesamzkr-node-app || true
-            docker run -d -p 80:4444 --name hesamzkr-node-app ttl.sh/hesamzkr-node-app:latest
+            sudo apt update
+            sudo apt install -y docker.io
+            sudo systemctl start docker
+            sudo docker stop hesamzkr-node-app || true
+            sudo docker rm hesamzkr-node-app || true
+            sudo docker run -d -p 80:4444 --name hesamzkr-node-app ttl.sh/hesamzkr-node-app:latest
 
 
 
