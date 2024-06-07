@@ -1,4 +1,4 @@
-name: Build and Staging
+name: Build,Staging,Deployment
 
 on:
   push:
@@ -39,7 +39,7 @@ jobs:
     needs: [build, test]
 
     steps:
-      - name: Deploy to Staging VM env:
+      - name: Deploy to Staging VM env
           DEPLOY_HOST: 192.168.105.3
           DEPLOY_USER: jenkins
           SSH_KEY: ${{ secrets.SSH_KEY }}
