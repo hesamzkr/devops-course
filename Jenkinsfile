@@ -22,7 +22,7 @@ pipeline {
                 script {
                     sshagent(credentials: [SSH_KEY_ID]) {
                         sh """
-			    scp -o StrictHostKeychecking=no k8s-deployment.yml vagrant@192.168.105.4
+			    scp -o StrictHostKeychecking=no k8s-deployment.yml vagrant@192.168.105.4:
 			    ssh -o StrictHostKeyChecking=no vagrant@192.168.105.4 <<EOF
                             kubectl apply -f k8s-deployment.yml
                         """
