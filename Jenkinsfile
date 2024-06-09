@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'ttl.sh/hesamzkr-python-app'
-        SSH_KEY_ID = 'staging-key'
+        SSH_KEY_ID = 'k8s-ssh-key'
     }
 
     stages {
@@ -20,9 +20,11 @@ pipeline {
         stage('Deploy to Kubernetes') { 
             steps {
                 script {
-                    withCredentials([file(credentialsId: 'k8s-credentials', variable: 'KUBECONFIG')]) {
+                    sshagent(credentials: [SSH_KEY_ID]) {
                         sh """
-                            kubectl --kubeconfig=$KUBECONFIG apply -f k8s-deployment.yml --validate=false
+			    scp -o StrictHostKeychecking=no k8s-deployment.yaml jenkins@192.168.56.4
+			    ssh -o StrictHostKeyChecking=no jenkins@192.168.105.4 <<EOF
+                            kubectl apply -f k8s-deployment.yml
                         """
                     } 
                 }
