@@ -1,1 +1,1 @@
-# devops-course-docker
+# devops-course
